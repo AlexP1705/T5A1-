@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Por favor, ingresa tu nombre: "
+echo "Ingresa tu nombre: "
 read nombre
 
 echo "Ahora, ingresa tu primer apellido: "

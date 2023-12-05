@@ -1,20 +1,33 @@
 #!/bin/bash
 
-# Verificar si se proporciona la cantidad correcta de argumentos
-if [ $# -lt 1 ] || [ $# -gt 2 ]; then
-    echo "Uso: micat [-r] <ruta_del_fichero>"
-    exit 1
-fi
+# Archivo de base de datos
+archivo_bd="bdlibros.txt"
 
-# Verificar si se proporciona el parámetro -r
-if [ "$1" == "-r" ]; then
-    if [ $# -eq 1 ]; then
-        echo "Uso: micat [-r] <ruta_del_fichero>"
-        exit 1
-    fi
-    # Mostrar el fichero de fin a principio
-    tac "$2" 2>/dev/null || echo "El fichero no existe."
+# Géneros disponibles
+generos=("Ficción" "No ficción" "Ciencia ficción" "Misterio" "Romance" "Fantasía")
+
+# Pedir al usuario los detalles del libro
+echo "Ingrese los detalles del libro:"
+read -p "Título: " titulo
+read -p "Año: " anio
+read -p "Editorial: " editorial
+
+# Mostrar los géneros disponibles
+echo "Géneros disponibles:"
+for ((i = 0; i < ${#generos[@]}; i++)); do
+    echo "$((i + 1)). ${generos[i]}"
+done
+
+# Pedir al usuario que elija un género
+read -p "Seleccione el número del género: " opcion_genero
+
+# Verificar la opción del género
+if [ $opcion_genero -ge 1 ] && [ $opcion_genero -le ${#generos[@]} ]; then
+    genero_elegido=${generos[opcion_genero - 1]}
+
+    # Insertar datos en el archivo de base de datos
+    echo "$titulo|$anio|$editorial|$genero_elegido" >> "$archivo_bd"
+    echo "Libro añadido correctamente a la base de datos."
 else
-    # Mostrar el fichero de principio a fin
-    cat "$1" 2>/dev/null || echo "El fichero no existe."
+    echo "Error: Opción de género no válida."
 fi

@@ -1,23 +1,26 @@
 #!/bin/bash
 
-# Pedir al usuario la cantidad de litros de agua consumidos
-echo "Ingrese la cantidad de litros de agua consumidos: "
-read litros
+while true; do
+    # Pedir al usuario un valor del día numérico del mes
+    read -p "Introduce un valor del día numérico del mes (1-30): " dia
 
-# Verificar si el valor ingresado es un número mayor que 0
-if ! [[ $litros =~ ^[1-9][0-9]*$ ]]; then
-    echo "Error: Ingresa una cantidad válida mayor que 0."
-    exit 1
-fi
+    # Verificar si el valor está en el rango de 1 a 30
+    if [[ $dia =~ ^[1-9]$|^1[0-9]$|^30$ ]]; then
+        # Calcular el día de la semana asumiendo que el día 1 es lunes
+        dia_semana=$(( (dia - 1) % 7))
 
-# Calcular el coste total según las indicaciones
-if [ $litros -le 50 ]; then
-    costo_total=20
-elif [ $litros -le 200 ]; then
-    costo_total=$(awk "BEGIN {printf \"%.2f\", 20 + ($litros - 50) * 0.20}")
-else
-    costo_total=$(awk "BEGIN {printf \"%.2f\", 20 + 150 * 0.20 + ($litros - 200) * 0.10}")
-fi
-
-# Mostrar el coste total
-echo "El coste total es de $costo_total euros."
+        # Mostrar el día de la semana
+        case $dia_semana in
+            0) echo "El día $dia corresponde a lunes." ;;
+            1) echo "El día $dia corresponde a martes." ;;
+            2) echo "El día $dia corresponde a miércoles." ;;
+            3) echo "El día $dia corresponde a jueves." ;;
+            4) echo "El día $dia corresponde a viernes." ;;
+            5) echo "El día $dia corresponde a sábado." ;;
+            6) echo "El día $dia corresponde a domingo." ;;
+        esac
+        break
+    else
+        echo "Error: Ingresa un valor válido en el rango de 1 a 30."
+    fi
+done
